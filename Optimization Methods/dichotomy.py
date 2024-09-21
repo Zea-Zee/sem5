@@ -1,13 +1,25 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Button
+import math
 
 
 def quadratic(x):
     return (x - 2)**2
 
 
-def dichotomy_steps(func, a, b, tol=1e-3, delta=1e-6):
+def qubiq(x):
+    return x ** 3 + 13 * x ** 2 -4 * x + 17
+
+
+def x2sinx(x):
+    return x ** 2 + abs(np.sin(x))
+
+
+func = x2sinx
+
+
+def dichotomy_steps(func, a, b, tol=4 * 1e-2, delta=1e-2):
     steps = []
     while (b - a) / 2.0 > tol:
         mid = (a + b) / 2.0
@@ -21,13 +33,13 @@ def dichotomy_steps(func, a, b, tol=1e-3, delta=1e-6):
     return steps
 
 
-steps = dichotomy_steps(quadratic, 0, 5)
+steps = dichotomy_steps(func, 0, 5)
 
 fig, ax = plt.subplots()
 plt.subplots_adjust(bottom=0.2)
 
 x_vals = np.linspace(0, 5, 400)
-y_vals = quadratic(x_vals)
+y_vals = func(x_vals)
 line_func, = ax.plot(x_vals, y_vals, label="Function")
 
 line_a, = ax.plot([], [], 'r--', label="a")
@@ -46,17 +58,17 @@ step_idx = 0
 def update_graph(step_idx):
     step = steps[step_idx]
     a, b, x1, x2, fx1, fx2 = step
-    line_a.set_data([a, a], [0, quadratic(a)])
-    line_b.set_data([b, b], [0, quadratic(b)])
-    point_x1.set_data([x1], [quadratic(x1)])
-    point_x2.set_data([x2], [quadratic(x2)])
+    line_a.set_data([a, a], [0, func(a)])
+    line_b.set_data([b, b], [0, func(b)])
+    point_x1.set_data([x1], [func(x1)])
+    point_x2.set_data([x2], [func(x2)])
 
     delta_line1.set_data([x1, x1], [0, fx1])
     delta_line2.set_data([x2, x2], [0, fx2])
 
     ax.set_xlim(a - 0.1, b + 0.1)
-    ax.set_ylim(0, max(quadratic(a), quadratic(
-        b), quadratic(x1), quadratic(x2)) + 0.5)
+    ax.set_ylim(0, max(func(a), func(
+        b), func(x1), func(x2)) + 0.5)
 
 
     if fx1 < fx2:
@@ -64,8 +76,7 @@ def update_graph(step_idx):
     else:
         comparison = "f(x1) >= f(x2)"
 
-    ax.set_title(f"a={a:.5f}, b={b:.5f}, x1={
-                 x1:.5f}, x2={x2:.5f} | {comparison}")
+    ax.set_title(f"a={a:.5f}, b={b:.5f}, x1={x1:.5f}, x2={x2:.5f} | {comparison}")
 
     fig.canvas.draw()
 

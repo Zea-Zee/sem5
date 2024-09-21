@@ -1,5 +1,10 @@
 import numpy as np
+import math
 # import matplotlib.pyplot as plt
+
+
+def func(x):
+    return x ** 2 + abs(math.sin(x))
 
 
 def dichotomy_method(func, a, b, tol=1e-3, delta=1e-6):
@@ -56,5 +61,5 @@ def quadratic(x):
 
 #f(x)=(x−2)
 #x=2
-print(dichotomy_method(quadratic, -10, 10))
+print(dichotomy_method(func, -10, 10))
 print(golden_section_method(quadratic, -10, 10))
