@@ -50,6 +50,18 @@ def find_intersection(x1, y1, m1, x2, y2, m2):
     return intersection_x, intersection_y
 
 
+colors = [
+    'red',
+    'orange',
+    'yellow',
+    'green',
+    'blue',
+    'magenta',
+    'pink',
+    'black',
+]
+
+
 def find_minimum(f, a, b, epsilon, n, max_iterations=1000):
     L = find_lipschitz_constant(f, a, b)
     intersections = []  # Список для хранения точек пересечения и расстояний
@@ -57,7 +69,7 @@ def find_minimum(f, a, b, epsilon, n, max_iterations=1000):
     plt.figure(figsize=(10, 6))
     x_values = np.linspace(a, b, n)
     y_values = f(x_values)
-    plt.plot(x_values, y_values, label='Исходная функция', color='blue')
+    plt.plot(x_values, y_values, label='f(x)', color='black')
 
     # Проводим линии Липшица
     left = a
@@ -111,8 +123,8 @@ def find_minimum(f, a, b, epsilon, n, max_iterations=1000):
             y2_value = [point2_1[1], point2_2[1]]
             print(x2_values, y2_value)
 
-            plt.plot(x1_values, y1_value, linestyle='--', color='orange')
-            plt.plot(x2_values, y2_value, linestyle='--', color='orange')
+            plt.plot(x1_values, y1_value, linestyle='--', color=colors[iters])
+            plt.plot(x2_values, y2_value, linestyle='--', color=colors[iters])
 
     # Получаем наименьшее значение по ординате из массива
     min_intersection = min(intersections, key=lambda x: x[1])
@@ -126,9 +138,9 @@ def find_minimum(f, a, b, epsilon, n, max_iterations=1000):
 
         # Рисуем линии Липшица под графиком функции
         plt.plot([a, inter_x_for_plt], [f(a), inter_y_for_plt],
-                 color='orange', linestyle='--', alpha=0.6)
+                 color='black', linestyle='--', alpha=0.5)
         plt.plot([b, inter_x_for_plt], [f(b), inter_y_for_plt],
-                 color='orange', linestyle='--', alpha=0.6)
+                 color='black', linestyle='--', alpha=0.6)
 
     plt.title('Поиск минимума функции с Липшица')
     plt.xlabel('x')
@@ -150,6 +162,6 @@ min_intersection = find_minimum(func5, a, b, epsilon, n)
 print("Наименьшая точка пересечения:", min_intersection)
 
 plt.plot(min_intersection[0], min_intersection[1], 'go')  # Точка пересечения
-plt.text(min_intersection[0], min_intersection[1] + 0.2, f'минимальная точка',
+plt.text(min_intersection[0], min_intersection[1] + 0.2, f'Min f(x)',
          fontsize=10, verticalalignment='center', color='black', )
 plt.show()
